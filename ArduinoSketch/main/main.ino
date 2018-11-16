@@ -18,11 +18,12 @@ IRsend irSend;
 //constantes utilizadas
 const unsigned long comandoDeLigarArCondicionado = 0x39C600FF; //exemplo: 0x39C600FF
 const unsigned long comandoDeDesligarArCondicionado;
+const String comandoStringParaLigar = "l";
+const String comandoStringParaDesligar = "d";
 
 
 //setar variaveis de controle
 bool estadoAr = false; // Controle de estado do ar condicionado
-String serialTratada;
 String serialReturn;
 int statusSensorPIR = 0;
 int statusSensorTemperatura = 0;
@@ -41,8 +42,8 @@ void setup() {
 
 void loop() { 
     // Premissa maxima para evento. Os eventos so poderão acontecer no horário 
- if(isTempoEvento()){
-    if(serialTratada.equals("STRING PARA LIGAR")){
+    if(serialReturn.equals(comandoStringParaLigar)){
+        ligarEletronicos();
           if(isPresencaOn()){
                 if(estadoAr == false){
                     ligarEletronicos();
@@ -56,10 +57,9 @@ void loop() {
 
                 }
           }
-    }else if(serialTratada.equals("STRING PARA DESLIGAR")){
+    }else if(serialReturn.equals(comandoStringParaDesligar)){
           if(estadoAr == true){      
               desligarEletronicos();
-              
           }else if(estadoAr == false){
               if(statusSensorTemperatura > 23){
                 delay(300000);                
@@ -68,10 +68,8 @@ void loop() {
                 delay(300000);
               }
           }
-             
     }
   }
-}                    
 
 void ligarEletronicos(){
   digitalWrite( atuadorRele, HIGH );
