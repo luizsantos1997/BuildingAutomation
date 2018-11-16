@@ -95,15 +95,9 @@ void receberDadosSensores(){
   statusSensorTemperatura = analogRead( sensorTemperatura );
 }
 
-bool isTempoEvento(){
-    serialTratada = receberDadosSerial();
-    if(serialTratada.equals("STRING PARA LIGAR")){
-        return true;
-    }else if(serialTratada.equals("STRING PARA DESLIGAR")){
-        return true;
-    }else{
-        return false;
-    }
+void receberTodosOsDadosExternos(){
+    receberDadosSensores();
+    receberDadosSerial();
 }
 
 bool isPresencaOn(){
