@@ -18,8 +18,8 @@ IRsend irSend;
 //constantes utilizadas
 const unsigned long comandoDeLigarArCondicionado = 0x39C600FF; //exemplo: 0x39C600FF
 const unsigned long comandoDeDesligarArCondicionado;
-const String comandoStringParaLigar = "l";
-const String comandoStringParaDesligar = "d";
+const String comandoStringParaLigarTudo = "l";
+const String comandoStringParaDesligarTudo = "d";
 
 
 //setar variaveis de controle
@@ -43,34 +43,34 @@ void setup() {
 
 void loop() { 
     // Premissa maxima para evento. Os eventos so poderão acontecer no horário 
-    if(serialReturn.equals(comandoStringParaLigar)){
+    if(serialReturn.equals(comandoStringParaLigarTudo)){
         ligarEletronicos();
-          if(isPresencaOn()){
-                if(estadoAr == false){
-                    ligarEletronicos();
-                }else if(estadoAr == true){
-                    if(statusSensorTemperatura > 23){
-                        delay(300000); // esperar 5 min #### Delay para o processamento da CPU verificar outra maneira de esperar.
-                    } // Testar se está gelando
-                    if(statusSensorTemperatura > 14 && statusSensorTemperatura < 24){
-                        delay(10000); // Sensor vai ler temperatura de 10 em 10 Segundos.
-                    }
-
+        if(isPresencaOn()){
+            if(estadoAr == false){
+                ligarEletronicos();
+            }else if(estadoAr == true){
+                if(statusSensorTemperatura > 23){
+                    delay(300000); // esperar 5 min #### Delay para o processamento da CPU verificar outra maneira de esperar.
+                } // Testar se está gelando
+                if(statusSensorTemperatura > 14 && statusSensorTemperatura < 24){
+                    delay(10000); // Sensor vai ler temperatura de 10 em 10 Segundos.
                 }
-          }
-    }else if(serialReturn.equals(comandoStringParaDesligar)){
-          if(estadoAr == true){      
-              desligarEletronicos();
-          }else if(estadoAr == false){
-              if(statusSensorTemperatura > 23){
+
+            }
+        }
+    }else if(serialReturn.equals(comandoStringParaDesligarTudo)){
+        if(estadoAr == true){      
+            desligarEletronicos();
+        }else if(estadoAr == false){
+            if(statusSensorTemperatura > 23){
                 delay(300000);                
-              }
-              if(statusSensorTemperatura > 14 && statusSensorTemperatura <24){
+            }
+            if(statusSensorTemperatura > 14 && statusSensorTemperatura <24){
                 delay(300000);
-              }
-          }
+            }
+        }
     }
-  }
+}
 
 void ligarEletronicos(){
   digitalWrite( atuadorRele, HIGH );
