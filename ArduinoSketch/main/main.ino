@@ -38,6 +38,7 @@ void setup() {
   //atuadores
   pinMode( atuadorRele, OUTPUT );
   pinMode( atuadorControleInfravermelho, OUTPUT );
+  receberTodosOsDadosExternos();
 }
 
 void loop() { 
