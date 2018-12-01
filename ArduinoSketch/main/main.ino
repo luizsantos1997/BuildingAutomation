@@ -28,7 +28,7 @@ bool jaEnviouLigar = false;
 bool jaEnviouDesligar = false;
 String serialReturn;
 int statusSensorPIR = 0;
-int statusSensorTemperatura = 0;
+double statusSensorTemperatura = 0; // Necessário double para precisão do sensor
 int statusSensorTemperaturaUltimoValorLido = 0;
 const unsigned long intervaloDeVerificacaoDoArCondicionado = 300000;
 unsigned long millisUltimoValorLido;
@@ -56,7 +56,7 @@ String receberDadosSerial(){
 }
 void receberDadosSensores(){
   statusSensorPIR = digitalRead( sensorPIR );
-  statusSensorTemperatura = analogRead( sensorTemperatura );
+  statusSensorTemperatura = map(((analogRead(4) - 20) * 3.04), 0, 1023, -40, 125); // Alteração para transformar valor para celsius
 }
 
 void receberTodosOsDadosExternos(){
@@ -72,7 +72,10 @@ bool isPresencaOn(){
 }
 
 void enviarDadosParaSerial(){
-    Serial.print(statusSensorPIR+"|"+statusSensorTemperatura);
+  // Problemas com a concatenação
+    Serial.print(statusSensorPIR);
+    Serial.print("|");
+    Serial.print(statusSensorTemperatura);
  }
 
 //FIM DAS FUNÇÔES
@@ -132,7 +135,7 @@ void loop() {
                     // se desligou desativo as flags
                 }else{
                     jaEnviouDesligar = false; //para não entrar mais na condicional
-                    estado do ar = false //REALMENTE desligou
+                    estadoAr = false //REALMENTE desligou
                 }
             }
         }
